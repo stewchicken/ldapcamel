@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:jms="http://servicemix.apache.org/jms/1.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+           xmlns:prop="http://camel.apache.org/schema/placeholder"
+           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+           http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd">
+
+    <!-- *************Configuration file definition (.cfg added by fuse)********************** -->
+    <!--cm:property-placeholder id="props" persistent-id="ldap">
+        <cm:default-properties>
+        </cm:default-properties>
+    </cm:property-placeholder-->
+    
+    <bean id="ldapserver" class="javax.naming.directory.InitialDirContext"
+            scope="prototype">
+        <argument>
+            <props>
+                <prop key="java.naming.factory.initial">com.sun.jndi.ldap.LdapCtxFactory</prop>
+                <prop key="java.naming.provider.url">ldap://ldapserver:8080</prop>
+                <prop key="java.naming.factory.url.pkgs">com.sun.jndi.url</prop>
+                <prop key="java.naming.referral">ignore</prop>
+                <prop key="java.naming.security.authentication">simple</prop>
+                <prop key="java.naming.security.principal">CN=XX,OU=XX,OU=XX,OU=XX,DC=XX,DC=XX,DC=XX</prop>
+                <prop key="java.naming.security.credentials">XXXXXX</prop>
+            </props>
+        </argument>
+    </bean>
+    <bean id="routeBuilder" class="com.yw.ldap.MyRouteBuilder">
+        <property name="ldapService" ref="ldapService"/>
+    </bean>
+    
+    <bean id="ldapService" class="com.yw.ldap.LdapService"  activation="lazy">
+        <property name="ctx" ref="ldapctx" />
+    </bean>
+    
+    <bean id="restService" class="com.yw.ldap.RestService"  activation="lazy">
+        <property name="ldapService" ref="ldapService" />
+    </bean>
+    
+
+    <jaxrs:server id="ldapRestServer" address="http://fuseserver:9090/ldap">
+        <jaxrs:serviceBeans>
+            <ref component-id="restService"/>
+        </jaxrs:serviceBeans>
+    </jaxrs:server>
+
+    <camelContext id="ldapctx" xmlns="http://camel.apache.org/schema/blueprint">
+        <propertyPlaceholder id="properties" location="blueprint:props" />  
+        <!--package>com.yw.ldap</package-->
+        <!-- LDAPServer -->
+        <template id="producer"/>
+        <routeBuilder ref="routeBuilder" />
+    </camelContext>
+</blueprint>

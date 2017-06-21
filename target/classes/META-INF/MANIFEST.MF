@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1497939098245
+Build-Jdk: 1.8.0_131
+Built-By: yw
+Bundle-Activator: com.yw.ldap.Activator
+Bundle-ManifestVersion: 2
+Bundle-Name: ldap
+Bundle-SymbolicName: com.yw.ldap
+Bundle-Version: 1.1.0
+Created-By: Apache Maven Bundle Plugin
+Export-Package: com.yw.ldap;uses:="org.osgi.framework,org.slf4j,org.apac
+ he.camel,javax.naming.directory,javax.naming.ldap,org.apache.camel.spi,
+ javax.naming,javax.servlet.http,org.apache.camel.builder,org.apache.cam
+ el.component.jetty,org.apache.camel.spring,org.apache.camel.model,org.a
+ pache.camel.util.jsse,javax.ws.rs,javax.ws.rs.core";version="1.1.0"
+Import-Package: javax.naming,javax.naming.directory,javax.naming.ldap,ja
+ vax.servlet.http;version="[2.6,3)",javax.ws.rs;version="[2.0,3)",javax.
+ ws.rs.core;version="[2.0,3)",org.apache.camel;version="[2.15,3)",org.ap
+ ache.camel.builder;version="[2.15,3)",org.apache.camel.component.jetty;
+ version="[2.15,3)",org.apache.camel.model;version="[2.15,3)",org.apache
+ .camel.spi;version="[2.15,3)",org.apache.camel.spring;version="[2.15,3)
+ ",org.apache.camel.util.jsse;version="[2.15,3)",org.osgi.framework;vers
+ ion="[1.6,2)",org.osgi.service.blueprint;version="[1.0.0,2.0.0)",org.sl
+ f4j;version="[1.6,2)"
+Tool: Bnd-1.50.0
